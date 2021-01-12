@@ -15,7 +15,7 @@ class TestValuationReportSteven(unittest2.TestCase):
 
 
 	def testGetValuationDataFromFile(self):
-		file = join(getCurrentDirectory(), 'samples', 'sample InvestValSTBF.xls')
+		file = join(getCurrentDirectory(), 'samples', 'InvestValSTBF_testcase1.xls')
 		date, currency, fixedDeposit, bondPositions, cashPositions = \
 			getValuationDataFromFile(file)
 
@@ -28,11 +28,11 @@ class TestValuationReportSteven(unittest2.TestCase):
 
 		bondPositions = list(bondPositions)
 		self.assertEqual(7, len(bondPositions))
-		self.verifyBondPosition(bondPositions[6])
+		self.verifyBondPosition(bondPositions[0])
 
 		cashPositions = list(cashPositions)
-		self.assertEqual(1, len(cashPositions))
-		self.verifyCashPosition(cashPositions[0])
+		self.assertEqual(2, len(cashPositions))
+		self.verifyCashPosition(cashPositions[1])
 
 
 
@@ -61,30 +61,30 @@ class TestValuationReportSteven(unittest2.TestCase):
 
 	def verifyBondPosition(self, p):
 		self.assertEqual(17, len(p))
-		self.assertEqual( 'COUNTRY GARDEN HLDGS CO LTD 3.3% S/A 12JAN2031'
+		self.assertEqual( 'randomise'
 						, p['INVESTMENT'])
-		self.assertEqual('XS2280833307', p['ISIN CODE'])
-		self.assertEqual(4500000, p['NOMINAL QUANTITY'])
+		self.assertEqual('XS1496345684', p['ISIN CODE'])
+		self.assertEqual(4800000.0000, p['NOMINAL QUANTITY'])
 		self.assertEqual('USD', p['DEAL CCY'])
-		self.assertEqual(99.645, p['AVG UNIT PRICE'])
-		self.assertEqual(4484025, p['ORIG CURR BOOK COST'])
-		self.assertEqual(4484025, p['PORT CURR BOOK COST'])
-		self.assertEqual(98.83, p['MARKET PRICE'])
-		self.assertEqual(4447350, p['ORIG CURR MKT VALUE'])
-		self.assertEqual(4447350, p['PORT CURR MKT VALUE'])
-		self.assertEqual('', p['ACCR INT PORT CCY'])
-		self.assertEqual(9.08, p['% OF TOTAL'])
-		self.assertEqual(-36675.00, p['UNREALIZED P/L PORT CCY']) #-- value modified to fix typo (from -36,675.00 to -36675.00)
+		self.assertEqual(100.980000, p['AVG UNIT PRICE'])
+		self.assertEqual(4847040, p['ORIG CURR BOOK COST'])
+		self.assertEqual(4847040, p['PORT CURR BOOK COST'])
+		self.assertEqual(101.027, p['MARKET PRICE'])
+		self.assertEqual(4849296, p['ORIG CURR MKT VALUE'])
+		self.assertEqual(4849296, p['PORT CURR MKT VALUE'])
+		self.assertEqual(45266.67, p['ACCR INT PORT CCY'])
+		self.assertEqual(9.90, p['% OF TOTAL'])
+		self.assertEqual(2256.00, p['UNREALIZED P/L PORT CCY'])
 		self.assertEqual('', p['CLASS CODE'])
-		self.assertEqual('2021-01-05', p['VALUE DATE']) #-- value modified base on sample file (from '2020-01-05' to '2021-01-05')
-		self.assertEqual(0, p['INT RATE'])
-		self.assertEqual('2031-01-12', p['MATURITY DATE'])
+		self.assertEqual('2016-09-26', p['VALUE DATE'])
+		self.assertEqual(3.5, p['INT RATE'])
+		self.assertEqual('2021-09-30', p['MATURITY DATE'])
 
 
 
 	def verifyCashPosition(self, p):
 		self.assertEqual(14, len(p))
-		self.assertEqual( 'USD CASH AC - BANK OF CHINA (HK)'
+		self.assertEqual( 'USD CASH AC - BANK OF CHINA (UK)'
 						, p['INVESTMENT'])
 		self.assertEqual('', p['ISIN CODE'])
 		self.assertEqual('', p['NOMINAL QUANTITY'])
@@ -96,6 +96,6 @@ class TestValuationReportSteven(unittest2.TestCase):
 		self.assertEqual(11893800.03, p['ORIG CURR MKT VALUE'])
 		self.assertEqual(11893800.03, p['PORT CURR MKT VALUE'])
 		self.assertEqual('', p['ACCR INT PORT CCY'])
-		self.assertEqual(24.29, p['% OF TOTAL'])
+		self.assertEqual(25.67, p['% OF TOTAL'])
 		self.assertEqual(0, p['UNREALIZED P/L PORT CCY'])
 		self.assertEqual('', p['CLASS CODE'])
