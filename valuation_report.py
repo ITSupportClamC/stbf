@@ -125,16 +125,16 @@ class ValuationReport:
             if ("Port Currency" in str(worksheet.row(r)[0])):
                 section_check[1] = 1
 
-            if ("Fixed Deposit" in str(worksheet.row(r)[0])):
+            if ("Fixed Deposit" == str(worksheet.row(r)[0].value)):
                 section_check[2] = 1
 
-            if ("Bond" in str(worksheet.row(r)[0])):
+            if ("Bond" == str(worksheet.row(r)[0].value)):
                 section_check[3] = 1
             
-            if ("Liquid Assests & Accruals" in str(worksheet.row(r)[0])):
+            if ("Liquid Assests & Accruals" == str(worksheet.row(r)[0].value)):
                 section_check[4] = 1
 
-            if ("Bank Balance" in str(worksheet.row(r)[0])):
+            if ("Bank Balance" == str(worksheet.row(r)[0].value)):
                 section_check[5] = 1
 
             if ("Cash Accrual" in str(worksheet.row(r)[0])):
@@ -173,7 +173,7 @@ class ValuationReport:
             for c in range(number_of_cols):
 
                 #-- retrieving portfolio date
-                if "VALUATION OF INVESTMENT" in  str(worksheet.cell_value(r, c)):
+                if "VALUATION OF INVESTMENT" in str(worksheet.cell_value(r, c)):
                     portfolio_date = str(worksheet.cell_value(r, c))
                     portfolio_date = portfolio_date.replace("VALUATION OF INVESTMENT AS AT ", "")
                     portfolio_date = portfolio_date.strip()
@@ -189,19 +189,19 @@ class ValuationReport:
 
                 #-- dividing sections of the xls file =============================================
                 #-- retrieving fixed deposit
-                if "Fixed Deposit" in str(worksheet.cell_value(r, c)):
+                if "Fixed Deposit" == str(worksheet.cell_value(r, c)):
                     fixed_deposit_positions_found = 1
                     fixed_deposit_positions_start = r + 2
 
-                if "Bond" in str(worksheet.cell_value(r, c)):
+                if "Bond" == str(worksheet.cell_value(r, c)):
                     fixed_deposit_positions_found = 0 
                     bond_positions_found = 1
                     bond_positions_start = r + 1
 
-                if "Liquid Assests & Accruals" in str(worksheet.cell_value(r, c)):
+                if "Liquid Assests & Accruals" == str(worksheet.cell_value(r, c)):
                     bond_positions_found = 0
 
-                if "Bank Balance" in str(worksheet.cell_value(r, c)):
+                if "Bank Balance" == str(worksheet.cell_value(r, c)):
                     bond_positions_found = 0
                     bank_balance_positions_found = 1
                     bank_balance_positions_start = r + 1
@@ -265,7 +265,7 @@ class ValuationReport:
                             # print("! " + str(c) + ": " + str(worksheet.cell_value(r, c)) + " | " + str(len(title_name)))     
                 
                 #-- retrieving single row bond positions
-                if ((bond_positions_found == 1) and (r >= 32)):
+                if ((bond_positions_found == 1) and (r >= bond_positions_start)):
                     if (title_name[c] != ""):
                         if (c < 15 and c < len(title_name)):
                             if isinstance(worksheet.cell_value(r, c), str):
@@ -344,20 +344,20 @@ class ValuationReport:
             #-- manipulate the alternating row of data
             if (i % 2 != 0):
                 #-- update the key with the alternate titles as well as formatting the dates
-                VALUE_DATE = bond_positions_cleanced[i].get("NOMINAL QUANTITY")
-                INT_RATE = float(bond_positions_cleanced[i].get("DEAL CCY").strip('%'))
-                MATURITY_DATE = bond_positions_cleanced[i].get("AVG UNIT PRICE")
+                value_date = bond_positions_cleanced[i].get("NOMINAL QUANTITY")
+                int_rate = float(bond_positions_cleanced[i].get("DEAL CCY").strip('%'))
+                maturity_date = bond_positions_cleanced[i].get("AVG UNIT PRICE")
                 bond_positions_cleanced[i].clear()
 
-                datetimeobject = datetime.strptime(VALUE_DATE,'%d/%m/%Y')
-                VALUE_DATE = datetimeobject.strftime('%Y-%m-%d')
+                datetimeobject = datetime.strptime(value_date,'%d/%m/%Y')
+                value_date = datetimeobject.strftime('%Y-%m-%d')
 
-                datetimeobject = datetime.strptime(MATURITY_DATE,'%d/%m/%Y')
-                MATURITY_DATE = datetimeobject.strftime('%Y-%m-%d')
+                datetimeobject = datetime.strptime(maturity_date,'%d/%m/%Y')
+                maturity_date = datetimeobject.strftime('%Y-%m-%d')
 
-                bond_positions_cleanced[i]['VALUE DATE'] = VALUE_DATE
-                bond_positions_cleanced[i]['INT RATE'] = INT_RATE
-                bond_positions_cleanced[i]['MATURITY DATE'] = MATURITY_DATE
+                bond_positions_cleanced[i]['VALUE DATE'] = value_date
+                bond_positions_cleanced[i]['INT RATE'] = int_rate
+                bond_positions_cleanced[i]['MATURITY DATE'] = maturity_date
         #-- divide the dictionary into chunks of 2, then merged each chunk of 2 into one single line of data
         bond_positions_merged_combined = list(zip(*[iter(bond_positions_cleanced)]*2))
         final_bond_positions_merged = []
