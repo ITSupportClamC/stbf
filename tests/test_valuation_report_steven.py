@@ -58,6 +58,26 @@ class TestValuationReportSteven(unittest2.TestCase):
 
 
 
+	def testGetValuationDataFromFile3(self):
+		file = join(getCurrentDirectory(), 'samples', 'sample 2021-01-14.xls')
+		date, currency, fixedDeposit, bondPositions, cashPositions = \
+			getValuationDataFromFile(file)
+
+		self.assertEqual('2021-01-13', date)
+		self.assertEqual('USD', currency)
+
+		fixedDeposit = list(fixedDeposit)
+		self.assertEqual(24, len(fixedDeposit))
+
+		bondPositions = list(bondPositions)
+		self.assertEqual(18, len(bondPositions))
+		self.verifyBondPosition3(bondPositions[15])
+
+		cashPositions = list(cashPositions)
+		self.assertEqual(1, len(cashPositions))
+
+
+
 	def verifyFixedDeposit(self, p):
 		self.assertEqual(17, len(p))
 		self.assertEqual( 'CHINA MINSHENG BANKING CORP LTD, HK BRANCH TIME DEPOSIT-USD'
@@ -147,6 +167,29 @@ class TestValuationReportSteven(unittest2.TestCase):
 		self.assertEqual('2016-06-07', p['VALUE DATE'])
 		self.assertEqual(2.7, p['INT RATE'])
 		self.assertEqual('2021-06-14', p['MATURITY DATE'])
+
+
+
+	def verifyBondPosition3(self, p):
+		self.assertEqual(17, len(p))
+		self.assertEqual( 'WESTWOOD GROUP HLDGS LTD 4.875% S/A 19APR2021'
+						, p['INVESTMENT'])
+		self.assertEqual('XS1807198145', p['ISIN CODE'])
+		self.assertEqual(5140000, p['NOMINAL QUANTITY'])
+		self.assertEqual('USD', p['DEAL CCY'])
+		self.assertEqual(100.849, p['AVG UNIT PRICE'])
+		self.assertEqual(5183638.60, p['ORIG CURR BOOK COST'])
+		self.assertEqual(5183638.60, p['PORT CURR BOOK COST'])
+		self.assertEqual(100.794, p['MARKET PRICE'])
+		self.assertEqual(5180811.60, p['ORIG CURR MKT VALUE'])
+		self.assertEqual(5180811.60, p['PORT CURR MKT VALUE'])
+		self.assertEqual(59163.54, p['ACCR INT PORT CCY'])
+		self.assertEqual(2.08, p['% OF TOTAL'])
+		self.assertEqual(-2827.00, p['UNREALIZED P/L PORT CCY'])
+		self.assertEqual('', p['CLASS CODE'])
+		self.assertEqual('2018-04-12', p['VALUE DATE'])
+		self.assertEqual(4.875, p['INT RATE'])
+		self.assertEqual('2021-04-19', p['MATURITY DATE'])
 
 
 
