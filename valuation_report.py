@@ -11,7 +11,7 @@ from datetime import datetime
 import xlrd
 from itertools import tee
 import logging
-import logging.config
+# import logging.config
 # from itertools import izip
 
 
@@ -40,22 +40,14 @@ getCurrentDirectory = lambda : \
 
 
 
-"""
-[String] file (daily valuation report for Short Term Bond Fund)
-    => [Tuple] ( [String] date (yyyy-mm-dd)
-                , [String] portfolio currency
-                , [Iterable] fixed deposit positions
-                , [Iterable] bond positions
-                , [Iterable] bank balance positions
-                )
-"""
 class ValuationReport:
 
     def __init__(self):
-        logging.config.fileConfig( join(getCurrentDirectory(), "logging_config.ini")
-                                 , defaults={'date':datetime.now().date().strftime('%Y-%m-%d')}
-								 )
-        self.logger = logging.getLogger('sLogger')
+        # logging.config.fileConfig( join(getCurrentDirectory(), "logging_config.ini")
+        #                          , defaults={'date':datetime.now().date().strftime('%Y-%m-%d')}
+								#  )
+        # self.logger = logging.getLogger('sLogger')
+        self.logger = logging.getLogger(__name__)
 
 
     def run(self, file):
