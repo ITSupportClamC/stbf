@@ -1,33 +1,8 @@
-# # coding=utf-8
-# #
-# # Functions to read valuation report from BOCI-Prudential valuation
-# # report.
-# # 
-# from os.path import abspath, dirname
-
-
-# def getValuationDataFromFile(file):
-# 	"""
-# 	[String] file (daily valuation report for Short Term Bond Fund)
-# 		=> [Tuple] ( [String] date (yyyy-mm-dd)
-# 				   , [String] portfolio currency
-# 				   , [Iterable] fixed deposit positions
-# 				   , [Iterable] bond positions
-# 				   , [Iterable] bank balance positions
-# 				   )
-# 	"""
-# 	# FIXME: to be implemented
-# 	return ('', '', [], [], [])
-
-# """
-# 	returns the current directory
-
-# 	for running the test case provided
-# """
-
-getCurrentDirectory = lambda : \
-    dirname(abspath(__file__))
-
+# coding=utf-8
+#
+# Functions to read valuation report from BOCI-Prudential valuation
+# report.
+# 
 import os
 import sys
 from os.path import abspath, dirname, join
@@ -39,8 +14,31 @@ import logging
 import logging.config
 # from itertools import izip
 
-def getValuationDataFromFile(filename):
-    return ValuationReport().run(filename)
+
+
+def getValuationDataFromFile(file):
+	"""
+	[String] file (daily valuation report for Short Term Bond Fund)
+		=> [Tuple] ( [String] date (yyyy-mm-dd)
+				   , [String] portfolio currency
+				   , [Iterable] fixed deposit positions
+				   , [Iterable] bond positions
+				   , [Iterable] bank balance positions
+				   )
+	"""
+	return ValuationReport().run(file)
+
+
+
+"""
+	returns the current directory
+
+	for running the test case provided
+"""
+getCurrentDirectory = lambda : \
+    dirname(abspath(__file__))
+
+
 
 """
 [String] file (daily valuation report for Short Term Bond Fund)
@@ -54,10 +52,11 @@ def getValuationDataFromFile(filename):
 class ValuationReport:
 
     def __init__(self):
-        logging.config.fileConfig("logging_config.ini",
-									defaults={'date':datetime.now().date().strftime('%Y-%m-%d')}
-									)
+        logging.config.fileConfig( join(getCurrentDirectory(), "logging_config.ini")
+                                 , defaults={'date':datetime.now().date().strftime('%Y-%m-%d')}
+								 )
         self.logger = logging.getLogger('sLogger')
+
 
     def run(self, file):
         self.logger.info('Running operation on file: ' + file)
